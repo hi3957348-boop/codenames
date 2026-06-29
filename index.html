@@ -28,19 +28,20 @@ try {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>코드네임스 - Oncuvate</title>
 <style>
+html,body{height:100%;margin:0;padding:0;}
 @font-face{font-family:'NexonMaplestory';src:url('https://cdn.jsdelivr.net/gh/fonts-archive/Maplestory/Maplestory-Bold.woff2') format('woff2'),url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/MaplestoryOTFBold.woff') format('woff');font-weight:700;font-display:swap;}
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:#000;width:100vw;min-height:100vh;margin:0 auto;font-family:'Malgun Gothic','Apple SD Gothic Neo',Arial,sans-serif;color:#fff;position:relative;}
+body{background:#000;width:100%;min-height:100%;margin:0 auto;font-family:'Malgun Gothic','Apple SD Gothic Neo',Arial,sans-serif;color:#fff;position:relative;}
 
 .header{height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;position:relative;z-index:10;}
 .header-title{font-size:60px;font-weight:normal;color:#5CE1E6;letter-spacing:0.04em;display:flex;align-items:center;gap:14px;font-family:'NexonMaplestory',sans-serif;}
 .header-title img{height:60px;}
 
-.screen{display:none;min-height:calc(100vh - 80px);padding:16px 32px;overflow-y:auto;}
-.screen.active{display:flex;flex-direction:column;}
-#home.active{align-items:center;justify-content:center;}
-#maker.active{overflow-y:auto;}
-#saved.active{overflow-y:auto;}
+.screen{display:none;width:100%;padding:16px 32px;box-sizing:border-box;}
+.screen.active{display:block;}
+#home.active{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;}
+#maker.active{display:block;overflow-y:auto;}
+#saved.active{display:block;overflow-y:auto;}
 
 #home{align-items:center;justify-content:center;gap:40px;}
 .home-buttons{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;align-items:center;}
