@@ -39,6 +39,7 @@ canvas {
   color: #fff;
   font-family: Pretendard, "Noto Sans KR", system-ui, sans-serif;
   text-align: center;
+  transform: scale(0.82);
   user-select: none;
 }
 
@@ -235,5 +236,5 @@ canvas {
 }
 
 @media (max-height: 700px) {
-  .online-lobby { transform: scale(0.86); }
+  .online-lobby { transform: scale(0.74); }
 }
