@@ -4,6 +4,7 @@ import MenuScene from './scenes/MenuScene.js';
 import GameScene from './scenes/GameScene.js';
 import ResultScene from './scenes/ResultScene.js';
 import StageSelectScene from './scenes/StageSelectScene.js';
+import OnlineLobbyScene from './scenes/OnlineLobbyScene.js';
 
 export const GAME_WIDTH = 960;
 export const GAME_HEIGHT = 540;
@@ -26,5 +27,8 @@ export const gameConfig = {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
   },
-  scene: [BootScene, MenuScene, StageSelectScene, GameScene, ResultScene],
+  dom: {
+    createContainer: true,
+  },
+  scene: [BootScene, OnlineLobbyScene, MenuScene, StageSelectScene, GameScene, ResultScene],
 };

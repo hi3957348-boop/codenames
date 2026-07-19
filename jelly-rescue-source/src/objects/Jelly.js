@@ -49,7 +49,10 @@ export default class Jelly extends Phaser.Physics.Arcade.Sprite {
       || this.body.touching.down
       || this.body.wasTouching.down;
 
-    if (Phaser.Input.Keyboard.JustDown(this.controls.jump) && grounded) {
+    const jumpPressed = typeof this.controls.consumeJump === 'function'
+      ? this.controls.consumeJump()
+      : Phaser.Input.Keyboard.JustDown(this.controls.jump);
+    if (jumpPressed && grounded) {
       this.setVelocityY(-this.jumpSpeed);
       this.scene.soundManager.playJump(this.playerNumber);
       this.isSquashing = true;
