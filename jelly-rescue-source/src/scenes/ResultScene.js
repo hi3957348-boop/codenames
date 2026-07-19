@@ -1,3 +1,6 @@
+import Phaser from 'phaser';
+import { roomService } from '../online/FirebaseRoomService.js';
+
 export default class ResultScene extends Phaser.Scene {
   constructor() {
     super('ResultScene');
@@ -37,6 +40,11 @@ export default class ResultScene extends Phaser.Scene {
       fontFamily: 'Noto Sans KR, sans-serif', fontSize: '22px', color: '#c9d7f4',
     }).setOrigin(0.5);
 
+    if (data.online) {
+      this.createOnlineResult(data, levelIndex);
+      return;
+    }
+
     if (data.hasNext) {
       this.createButton(280, 412, '다음 스테이지', 0x6d5dfc, () => (
         this.scene.start('GameScene', { levelIndex: levelIndex + 1 })
@@ -60,6 +68,60 @@ export default class ResultScene extends Phaser.Scene {
         this.scene.start('GameScene', { levelIndex })
       ));
     }
+  }
+
+  createOnlineResult(data, levelIndex) {
+    this.add.text(480, 346, `방 ${data.roomCode} · 함께 구조 성공!`, {
+      fontFamily: 'Arial Black, Noto Sans KR, sans-serif',
+      fontSize: '17px', color: '#83ffc0',
+    }).setOrigin(0.5);
+
+    if (data.role === 'host') {
+      if (data.hasNext) {
+        this.createButton(280, 426, '다음 스테이지', 0x6d5dfc, () => (
+          this.startOnlineLevel(levelIndex + 1, data)
+        ));
+      }
+      this.createButton(data.hasNext ? 480 : 380, 426, '다시 도전', 0x4d70a8, () => (
+        this.startOnlineLevel(levelIndex, data)
+      ));
+      this.createButton(data.hasNext ? 680 : 580, 426, '방 나가기', 0x2d3d63, () => this.leaveOnline());
+    } else {
+      this.add.text(480, 405, '방장이 다음 스테이지를 고르는 중...', {
+        fontFamily: 'Noto Sans KR, sans-serif', fontSize: '16px', color: '#c9d7f4',
+      }).setOrigin(0.5);
+      this.createButton(480, 466, '방 나가기', 0x2d3d63, () => this.leaveOnline());
+      this.roomUnsubscribe = roomService.subscribeRoom((room) => {
+        if (room?.status !== 'playing') return;
+        this.roomUnsubscribe?.();
+        this.roomUnsubscribe = null;
+        this.scene.start('GameScene', {
+          online: true,
+          levelIndex: room.levelIndex ?? levelIndex,
+          role: data.role,
+          roomCode: data.roomCode,
+          playerNumber: data.playerNumber,
+        });
+      });
+      this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.roomUnsubscribe?.());
+    }
+  }
+
+  async startOnlineLevel(levelIndex, data) {
+    await roomService.startLevel(levelIndex);
+    this.scene.start('GameScene', {
+      online: true,
+      levelIndex,
+      role: data.role,
+      roomCode: data.roomCode,
+      playerNumber: data.playerNumber,
+    });
+  }
+
+  async leaveOnline() {
+    this.roomUnsubscribe?.();
+    await roomService.leave();
+    this.scene.start('OnlineLobbyScene');
   }
 
   createButton(x, y, label, color, callback) {

@@ -44,4 +44,12 @@ export default class PressurePlate {
       this.scene.soundManager.playPlate();
     }
   }
+
+  setNetworkActive(active) {
+    this.active = Boolean(active);
+    this.justActivated = false;
+    this.pad.setFillStyle(this.active ? 0x63f29a : 0xffc54d);
+    this.pad.y = this.active ? this.config.y + 4 : this.config.y;
+    this.label.setColor(this.active ? '#8dffb5' : '#ffe59a');
+  }
 }

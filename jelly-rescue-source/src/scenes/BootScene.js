@@ -12,7 +12,7 @@ export default class BootScene extends Phaser.Scene {
     this.createJellyTexture('jelly-pink-blink', 0xff6fae, 0xffc4de, true);
     this.createBoxTexture();
     this.createHeavyBoxTexture();
-    this.scene.start('MenuScene');
+    this.scene.start('OnlineLobbyScene');
   }
 
   createJellyTexture(key, color, highlight, blinking = false) {
